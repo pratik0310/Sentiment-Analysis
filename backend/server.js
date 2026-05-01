@@ -1,58 +1,55 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { clerkMiddleware, requireAuth } from "@clerk/express"; // Updated import
+import { clerkMiddleware, requireAuth } from "@clerk/express";
 import analyzeRoute from "./routes/analyze.js";
 
 dotenv.config();
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
-// Configure CORS properly
+// CORS fix
 app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  origin: "*",
+  credentials: true
 }));
 
 app.use(express.json());
 
-// Add Clerk middleware to all routes
+// Clerk middleware
 app.use(clerkMiddleware());
 
-// Public route for testing
+// Test route
 app.get("/", (req, res) => {
   res.json({ message: "Stock Sentiment Analysis API" });
 });
 
-// Public route to check auth status
+// Public route
 app.get("/public", (req, res) => {
   res.json({ message: "This is a public endpoint" });
 });
 
-// Protected route - require authentication for analyze
+// Protected route
 app.use("/analyze", requireAuth(), analyzeRoute);
 
-// Error handling middleware for authentication errors
+// Error handler
 app.use((err, req, res, next) => {
   console.error("Auth Error:", err);
-  
+
   if (err.status === 401) {
-    return res.status(401).json({ 
-      error: "Unauthorized", 
-      message: "You must be signed in to access this resource",
+    return res.status(401).json({
+      error: "Unauthorized",
+      message: "You must be signed in",
       code: "auth_required"
     });
   }
-  
-  res.status(err.status || 500).json({ 
-    error: err.message || "Internal server error" 
+
+  res.status(err.status || 500).json({
+    error: err.message || "Internal server error"
   });
 });
 
-console.log("✅ Gemini API Keys loaded");
-app.listen(PORT, () =>
-  console.log(`🚀 Server running on http://localhost:${PORT}`)
-);
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
