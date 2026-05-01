@@ -84,7 +84,7 @@ const trackRequest = (key) => {
 // Create a new Gemini client with a specific key
 const getGeminiModel = (apiKey) => {
   const genAI = new GoogleGenerativeAI(apiKey);
-  return genAI.getGenerativeModel({ model: "gemini-3-flash" });
+  return genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
 };
 
 // Helper function to delay execution
@@ -313,20 +313,16 @@ RULES:
 - redFlags: negative observations (max 3)
 - summary: brief 1-2 sentence conclusion
 - note: any disclaimer about data quality/relevance
--convert score into percentage at last step and return in percentage format
-- If no news is found, return a default analysis with score 0.0% and note about lack of data
--for negative give negative percentage
 
 Example for no news:
 {
-  "score": 0.0%,
+  "score": 0.0,
   "analysisType": "default",
   "confidence": "low",
   "greenFlags": ["No negative news available"],
   "redFlags": ["Limited information for analysis"],
   "summary": "Unable to determine sentiment due to lack of recent news about ${stock}.",
   "note": "Analysis based on general market perception"
-
 }
 
 Now analyze ${stock} and return ONLY the JSON object.
@@ -404,7 +400,7 @@ Now analyze ${stock} and return ONLY the JSON object.
       
       // Prepare portfolio data for email
       const portfolioData = {
-        overallScore: overallScore*100/100,//convert to percentage  
+        overallScore: overallScore,
         stocks: results.map(r => ({
           symbol: r.stock,
           score: r.analysis?.score || 0,

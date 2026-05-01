@@ -1,166 +1,460 @@
-import { motion } from "framer-motion";
+// pages/About.jsx
+import { motion } from 'framer-motion';
+
+const TEAM = [
+  {
+    id: 'ACH',
+    name: 'Alex Chen',
+    role: 'CEO & Founder',
+    bio: '10+ years in fintech and AI. Built two exits before FutureWise.',
+    tag: 'T-01',
+  },
+  {
+    id: 'SJN',
+    name: 'Sarah Johnson',
+    role: 'Head of AI',
+    bio: 'PhD in Machine Learning. Former research lead at DeepMind.',
+    tag: 'T-02',
+  },
+  {
+    id: 'MPT',
+    name: 'Mike Patel',
+    role: 'Lead Engineer',
+    bio: 'Ex-Google L6. Obsessed with sub-100ms latency at scale.',
+    tag: 'T-03',
+  },
+  {
+    id: 'PSN',
+    name: 'Priya Singh',
+    role: 'Product Manager',
+    bio: 'Fintech product specialist. Ships fast, cuts scope faster.',
+    tag: 'T-04',
+  },
+];
+
+const PILLARS = [
+  {
+    tag: '01',
+    title: 'Our Mission',
+    desc: 'To hand every retail investor the same AI-grade signal infrastructure that hedge funds pay millions for.',
+    icon: (
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+        <circle cx="13" cy="13" r="10" stroke="#00d97e" strokeWidth="1.5" fill="none"/>
+        <circle cx="13" cy="13" r="5" stroke="#00d97e" strokeWidth="1" fill="none" opacity="0.5"/>
+        <circle cx="13" cy="13" r="2" fill="#c8ff00"/>
+        <line x1="13" y1="3" x2="13" y2="8" stroke="#00d97e" strokeWidth="1.5"/>
+        <line x1="13" y1="18" x2="13" y2="23" stroke="#00d97e" strokeWidth="1.5"/>
+        <line x1="3" y1="13" x2="8" y2="13" stroke="#00d97e" strokeWidth="1.5"/>
+        <line x1="18" y1="13" x2="23" y2="13" stroke="#00d97e" strokeWidth="1.5"/>
+      </svg>
+    ),
+  },
+  {
+    tag: '02',
+    title: 'Our Vision',
+    desc: 'A market where signal beats noise — where every investor, regardless of capital, reads the room correctly.',
+    icon: (
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+        <ellipse cx="13" cy="13" rx="10" ry="5" stroke="#00d97e" strokeWidth="1.5" fill="none"/>
+        <circle cx="13" cy="13" r="2.5" fill="#c8ff00"/>
+        <line x1="5" y1="8" x2="21" y2="8" stroke="#00d97e" strokeWidth="0.8" strokeDasharray="2 2" opacity="0.4"/>
+        <line x1="5" y1="18" x2="21" y2="18" stroke="#00d97e" strokeWidth="0.8" strokeDasharray="2 2" opacity="0.4"/>
+      </svg>
+    ),
+  },
+  {
+    tag: '03',
+    title: 'Our Values',
+    desc: 'Radical transparency in how we score. No black boxes. You see the data, the weights, the verdict.',
+    icon: (
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+        <rect x="3" y="3" width="20" height="20" rx="2" stroke="#00d97e" strokeWidth="1.5" fill="none"/>
+        <polyline points="7,13 11,17 19,9" stroke="#c8ff00" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+      </svg>
+    ),
+  },
+];
+
+const STATS = [
+  { n: '50K+', label: 'Active Users' },
+  { n: '1M+',  label: 'Scans run' },
+  { n: '98%',  label: 'Uptime SLA' },
+  { n: '24/7', label: 'Live data' },
+];
 
 export default function About() {
-  const team = [
-    { name: "Alex Chen", role: "CEO & Founder", bio: "10+ years in fintech and AI", icon: "👨‍💻" },
-    { name: "Sarah Johnson", role: "Head of AI", bio: "PhD in Machine Learning", icon: "🤖" },
-    { name: "Mike Patel", role: "Lead Engineer", bio: "Ex-Google, full-stack expert", icon: "⚡" },
-    { name: "Priya Singh", role: "Product Manager", bio: "Fintech product specialist", icon: "📊" },
-  ];
-
   return (
-    <div>
-      {/* Hero Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        style={{
-          textAlign: "center",
-          padding: "60px 20px",
-          backgroundColor: "#2d2d2d",
-          borderRadius: "20px",
-          marginBottom: "40px",
-          border: "1px solid #444",
-        }}
-      >
-        <h1 style={{ color: "#fff", fontSize: "48px", marginBottom: "20px" }}>
-          About FutureWise
-        </h1>
-        <p style={{ color: "#aaa", fontSize: "18px", maxWidth: "800px", margin: "0 auto", lineHeight: "1.8" }}>
-          We're on a mission to democratize stock market analysis using cutting-edge AI technology. 
-          Our platform helps investors of all levels make smarter, data-driven decisions.
-        </p>
-      </motion.div>
-
-      {/* Mission Section */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-          gap: "30px",
-          marginBottom: "50px",
-        }}
-      >
-        {[
-          {
-            title: "Our Mission",
-            content: "To empower every investor with AI-powered insights that were once only available to institutional traders.",
-            icon: "🎯"
-          },
-          {
-            title: "Our Vision",
-            content: "A world where sophisticated market analysis is accessible to everyone, leveling the playing field in finance.",
-            icon: "👁️"
-          },
-          {
-            title: "Our Values",
-            content: "Transparency, innovation, and user-first design guide everything we build.",
-            icon: "💎"
-          },
-        ].map((item, i) => (
-          <motion.div
-            key={i}
-            whileHover={{ y: -5 }}
-            style={{
-              backgroundColor: "#2d2d2d",
-              borderRadius: "15px",
-              padding: "30px",
-              border: "1px solid #444",
-            }}
-          >
-            <div style={{ fontSize: "48px", marginBottom: "20px" }}>{item.icon}</div>
-            <h2 style={{ color: "#fff", marginBottom: "15px" }}>{item.title}</h2>
-            <p style={{ color: "#aaa", lineHeight: "1.6" }}>{item.content}</p>
-          </motion.div>
-        ))}
-      </motion.div>
-
-      {/* Team Section */}
-      <h2 style={{ color: "#fff", textAlign: "center", fontSize: "36px", marginBottom: "30px" }}>
-        Meet Our Team
-      </h2>
-      
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-        gap: "30px",
-        marginBottom: "50px",
-      }}>
-        {team.map((member, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: i * 0.1 }}
-            whileHover={{ y: -10 }}
-            style={{
-              backgroundColor: "#2d2d2d",
-              borderRadius: "15px",
-              padding: "30px",
-              border: "1px solid #444",
-              textAlign: "center",
-            }}
-          >
-            <div style={{
-              fontSize: "80px",
-              marginBottom: "20px",
-              animation: "float 3s ease-in-out infinite",
-            }}>
-              {member.icon}
-            </div>
-            <h3 style={{ color: "#fff", marginBottom: "5px" }}>{member.name}</h3>
-            <div style={{ color: "#4a90e2", marginBottom: "10px", fontWeight: "bold" }}>
-              {member.role}
-            </div>
-            <p style={{ color: "#aaa", fontSize: "14px" }}>{member.bio}</p>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Stats Section */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.6 }}
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
-          gap: "20px",
-          backgroundColor: "#2d2d2d",
-          borderRadius: "20px",
-          padding: "40px",
-          border: "1px solid #444",
-        }}
-      >
-        {[
-          { value: "50K+", label: "Users" },
-          { value: "1M+", label: "Analyses" },
-          { value: "98%", label: "Accuracy" },
-          { value: "24/7", label: "Support" },
-        ].map((stat, i) => (
-          <motion.div
-            key={i}
-            whileHover={{ scale: 1.1 }}
-            style={{ textAlign: "center" }}
-          >
-            <div style={{ fontSize: "36px", fontWeight: "bold", color: "#4a90e2" }}>
-              {stat.value}
-            </div>
-            <div style={{ color: "#aaa" }}>{stat.label}</div>
-          </motion.div>
-        ))}
-      </motion.div>
+    <div style={{
+      background: '#050905',
+      minHeight: '100vh',
+      color: '#d4e8d4',
+      fontFamily: "'DM Sans', sans-serif",
+    }}>
 
       <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&family=Bebas+Neue&display=swap');
+
+        .about-card {
+          border: 1px solid #141f14;
+          border-left: 2px solid #1e3a1e;
+          padding: 28px 24px;
+          background: #070d07;
+          transition: border-color 0.25s, background 0.25s;
         }
+        .about-card:hover {
+          border-color: #2a5c2a;
+          border-left-color: #00d97e;
+          background: #090f09;
+        }
+
+        .team-card {
+          border: 1px solid #141f14;
+          padding: 32px 24px;
+          background: #070d07;
+          transition: border-color 0.25s, background 0.25s;
+          position: relative;
+          overflow: hidden;
+        }
+        .team-card:hover {
+          border-color: #2a5c2a;
+          background: #090f09;
+        }
+        .team-card:hover .team-id {
+          color: #c8ff00;
+        }
+
+        .dot-grid {
+          background-image: radial-gradient(#1a2a1a 1px, transparent 1px);
+          background-size: 28px 28px;
+        }
+
+        .stat-block {
+          padding: 32px 24px;
+          border-right: 1px solid #111d11;
+          text-align: center;
+        }
+        .stat-block:last-child { border-right: none; }
       `}</style>
+
+      {/* Top bar */}
+      <div style={{
+        borderBottom: '1px solid #111d11',
+        padding: '14px 40px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        fontFamily: "'IBM Plex Mono', monospace",
+        fontSize: '11px',
+        color: '#3d5c3d',
+        letterSpacing: '0.08em',
+      }}>
+        <span>FUTUREWISE_v2.1 // ABOUT_MODULE</span>
+        <span style={{ color: '#00d97e' }}>● LIVE</span>
+      </div>
+
+      {/* Hero */}
+      <div className="dot-grid" style={{ padding: '72px 40px 60px', position: 'relative', overflow: 'hidden' }}>
+        <div style={{
+          position: 'absolute',
+          right: '-10px',
+          top: '10px',
+          fontFamily: "'Bebas Neue', sans-serif",
+          fontSize: '300px',
+          color: '#0b150b',
+          lineHeight: 1,
+          pointerEvents: 'none',
+          userSelect: 'none',
+        }}>US</div>
+
+        <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative' }}>
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7 }}
+          >
+            <div style={{
+              fontFamily: "'IBM Plex Mono', monospace",
+              fontSize: '11px',
+              letterSpacing: '0.16em',
+              color: '#00d97e',
+              textTransform: 'uppercase',
+              marginBottom: '24px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+            }}>
+              <span style={{ display: 'inline-block', width: '24px', height: '1px', background: '#00d97e' }}/>
+              Who We Are
+            </div>
+
+            <h1 style={{
+              fontFamily: "'Bebas Neue', sans-serif",
+              fontSize: 'clamp(56px, 7vw, 88px)',
+              lineHeight: 0.95,
+              color: '#e8f5e8',
+              marginBottom: '28px',
+              letterSpacing: '0.02em',
+            }}>
+              BUILT BY TRADERS<br/>
+              <span style={{ color: '#c8ff00' }}>FOR TRADERS</span>
+            </h1>
+
+            <p style={{
+              fontSize: '16px',
+              color: '#6a8a6a',
+              lineHeight: 1.75,
+              maxWidth: '520px',
+              fontWeight: 300,
+            }}>
+              We got tired of reacting to yesterday's news. So we built FutureWise — a real-time AI sentiment engine that reads the market before it moves.
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Divider */}
+      <div style={{ padding: '0 40px' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ height: '1px', background: 'linear-gradient(to right, transparent, #1e3a1e, transparent)' }}/>
+        </div>
+      </div>
+
+      {/* Mission / Vision / Values */}
+      <div style={{ padding: '72px 40px', maxWidth: '1200px', margin: '0 auto' }}>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          style={{ marginBottom: '48px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}
+        >
+          <div>
+            <div style={{
+              fontFamily: "'IBM Plex Mono', monospace",
+              fontSize: '11px',
+              color: '#00d97e',
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              marginBottom: '12px',
+            }}>— Core principles</div>
+            <h2 style={{
+              fontFamily: "'Bebas Neue', sans-serif",
+              fontSize: 'clamp(36px, 4vw, 56px)',
+              color: '#e8f5e8',
+              lineHeight: 0.95,
+              letterSpacing: '0.02em',
+            }}>
+              WHAT WE<br/>STAND FOR
+            </h2>
+          </div>
+          <div style={{
+            fontFamily: "'IBM Plex Mono', monospace",
+            fontSize: '11px',
+            color: '#2a3f2a',
+            textAlign: 'right',
+          }}>3 PILLARS<br/>1 PURPOSE</div>
+        </motion.div>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+          gap: '1px',
+          background: '#111d11',
+          border: '1px solid #111d11',
+        }}>
+          {PILLARS.map((p, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.5, delay: i * 0.12 }}
+              className="about-card"
+            >
+              <div style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: '11px',
+                color: '#2a3f2a',
+                marginBottom: '20px',
+                letterSpacing: '0.1em',
+              }}>{p.tag} /</div>
+              <div style={{ marginBottom: '16px' }}>{p.icon}</div>
+              <h3 style={{ fontSize: '15px', fontWeight: 500, color: '#c8e8c8', marginBottom: '10px', letterSpacing: '0.02em' }}>
+                {p.title}
+              </h3>
+              <p style={{ fontSize: '14px', color: '#4d6a4d', lineHeight: 1.7, fontWeight: 300 }}>
+                {p.desc}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Divider */}
+      <div style={{ padding: '0 40px' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ height: '1px', background: 'linear-gradient(to right, transparent, #1e3a1e, transparent)' }}/>
+        </div>
+      </div>
+
+      {/* Stats bar */}
+      <div style={{ padding: '0 40px' }}>
+        <div style={{
+          maxWidth: '1200px',
+          margin: '0 auto',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          border: '1px solid #111d11',
+          borderTop: 'none',
+        }}>
+          {STATS.map((s, i) => (
+            <motion.div
+              key={i}
+              className="stat-block"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+            >
+              <div style={{
+                fontFamily: "'Bebas Neue', sans-serif",
+                fontSize: '42px',
+                color: '#c8ff00',
+                lineHeight: 1,
+              }}>{s.n}</div>
+              <div style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: '11px',
+                color: '#3d5c3d',
+                marginTop: '6px',
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+              }}>{s.label}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Team */}
+      <div style={{ padding: '72px 40px', maxWidth: '1200px', margin: '0 auto' }}>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          style={{ marginBottom: '48px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}
+        >
+          <div>
+            <div style={{
+              fontFamily: "'IBM Plex Mono', monospace",
+              fontSize: '11px',
+              color: '#00d97e',
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              marginBottom: '12px',
+            }}>— The operators</div>
+            <h2 style={{
+              fontFamily: "'Bebas Neue', sans-serif",
+              fontSize: 'clamp(36px, 4vw, 56px)',
+              color: '#e8f5e8',
+              lineHeight: 0.95,
+              letterSpacing: '0.02em',
+            }}>
+              MEET THE<br/>SIGNAL TEAM
+            </h2>
+          </div>
+          <div style={{
+            fontFamily: "'IBM Plex Mono', monospace",
+            fontSize: '11px',
+            color: '#2a3f2a',
+            textAlign: 'right',
+          }}>4 HUMANS<br/>∞ CAFFEINE</div>
+        </motion.div>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+          gap: '1px',
+          background: '#111d11',
+          border: '1px solid #111d11',
+        }}>
+          {TEAM.map((m, i) => (
+            <motion.div
+              key={i}
+              className="team-card"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+            >
+              {/* BG accent */}
+              <div style={{
+                position: 'absolute',
+                top: '-20px',
+                right: '-10px',
+                fontFamily: "'Bebas Neue', sans-serif",
+                fontSize: '80px',
+                color: '#0c150c',
+                lineHeight: 1,
+                userSelect: 'none',
+                pointerEvents: 'none',
+              }}>{m.id}</div>
+
+              <div style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: '11px',
+                color: '#2a3f2a',
+                marginBottom: '20px',
+                letterSpacing: '0.1em',
+              }} className="team-id">{m.tag} /</div>
+
+              {/* Avatar placeholder — initials */}
+              <div style={{
+                width: '52px',
+                height: '52px',
+                border: '1px solid #1e3a1e',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: '14px',
+                color: '#00d97e',
+                marginBottom: '20px',
+                letterSpacing: '0.08em',
+                background: '#060d06',
+              }}>{m.id}</div>
+
+              <h3 style={{ fontSize: '16px', fontWeight: 500, color: '#c8e8c8', marginBottom: '6px', letterSpacing: '0.02em' }}>
+                {m.name}
+              </h3>
+              <div style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: '11px',
+                color: '#c8ff00',
+                marginBottom: '14px',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+              }}>{m.role}</div>
+              <p style={{ fontSize: '13px', color: '#4d6a4d', lineHeight: 1.7, fontWeight: 300 }}>
+                {m.bio}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Footer strip */}
+      <div style={{
+        borderTop: '1px solid #111d11',
+        padding: '20px 40px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        fontFamily: "'IBM Plex Mono', monospace",
+        fontSize: '11px',
+        color: '#2a3f2a',
+        letterSpacing: '0.08em',
+      }}>
+        <span>© 2025 FUTUREWISE — NOT FINANCIAL ADVICE</span>
+        <span>BUILD_ID: fw-2.1.0</span>
+      </div>
     </div>
   );
 }
