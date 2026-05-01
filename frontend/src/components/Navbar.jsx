@@ -3,243 +3,368 @@ import { Link, useLocation } from 'react-router-dom';
 import { useUser, SignInButton, SignUpButton, UserButton } from '@clerk/clerk-react';
 import { useState, useEffect } from 'react';
 
+const NAV_LINKS = [
+  { path: '/', name: 'Home' },
+  { path: '/analyze', name: 'Analyze' },
+  { path: '/dashboard', name: 'Dashboard' },
+  { path: '/pricing', name: 'Pricing' },
+  { path: '/about', name: 'About' },
+];
+
+function NavLink({ link, isActive }) {
+  const [hovered, setHovered] = useState(false);
+  const active = isActive || hovered;
+
+  return (
+    <Link
+      to={link.path}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        textDecoration: 'none',
+        fontFamily: "'IBM Plex Mono', monospace",
+        fontSize: '11px',
+        letterSpacing: '0.1em',
+        textTransform: 'uppercase',
+        color: isActive ? '#c8ff00' : hovered ? '#7aaa7a' : '#3d5c3d',
+        padding: '6px 0',
+        position: 'relative',
+        transition: 'color 0.2s',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '4px',
+      }}
+    >
+      {link.name}
+      <span style={{
+        display: 'block',
+        height: '1px',
+        background: isActive ? '#c8ff00' : '#3d5c3d',
+        width: active ? '100%' : '0%',
+        transition: 'width 0.25s ease',
+      }}/>
+    </Link>
+  );
+}
+
 export default function Navbar() {
   const { user, isSignedIn } = useUser();
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [signinHover, setSigninHover] = useState(false);
+  const [signupHover, setSignupHover] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const navLinks = [
-    { path: '/', name: 'Home', icon: '' },
-    { path: '/analyze', name: 'Analyze', icon: '' },
-    { path: '/dashboard', name: 'Dashboard', icon: '' },
-    { path: '/pricing', name: 'Pricing', icon: '' },
-    { path: '/about', name: 'About', icon: '' },
-  ];
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
 
   return (
     <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Bebas+Neue&display=swap');
+
+        .fw-nav-hamburger {
+          display: none;
+          background: none;
+          border: 1px solid #141f14;
+          color: #3d5c3d;
+          width: 36px;
+          height: 36px;
+          cursor: pointer;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          gap: 5px;
+          padding: 8px;
+          transition: border-color 0.2s;
+        }
+        .fw-nav-hamburger:hover { border-color: #2a5c2a; }
+
+        @media (max-width: 768px) {
+          .fw-nav-links { display: none !important; }
+          .fw-nav-user  { display: none !important; }
+          .fw-nav-hamburger { display: flex !important; }
+        }
+      `}</style>
+
       <nav style={{
         position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
+        top: 0, left: 0, right: 0,
         zIndex: 1000,
-        padding: scrolled ? '10px 20px' : '20px 20px',
-        backgroundColor: scrolled ? 'rgba(26, 26, 26, 0.95)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(10px)' : 'none',
-        boxShadow: scrolled ? '0 4px 20px rgba(0,0,0,0.3)' : 'none',
-        transition: 'all 0.3s ease',
+        background: scrolled ? 'rgba(5, 9, 5, 0.97)' : 'rgba(5, 9, 5, 0.7)',
+        backdropFilter: 'blur(12px)',
+        borderBottom: `1px solid ${scrolled ? '#111d11' : 'transparent'}`,
+        transition: 'background 0.3s, border-color 0.3s',
       }}>
+        {/* Top status line */}
         <div style={{
-          maxWidth: '1400px',
-          margin: '0 auto',
+          borderBottom: '1px solid #0d180d',
+          padding: '5px 40px',
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'center',
+          fontFamily: "'IBM Plex Mono', monospace",
+          fontSize: '9px',
+          letterSpacing: '0.12em',
+          color: '#1e2e1e',
         }}>
-          {/* Logo with animation */}
-          <Link to="/" style={{ textDecoration: 'none' }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              animation: 'slideIn 0.5s ease',
-            }}>
+          <span>FUTUREWISE_TERMINAL // SENTIMENT ENGINE v2.1</span>
+          <span style={{ color: '#1a3a1a' }}>
+            {new Date().toUTCString().replace('GMT', 'UTC')}
+          </span>
+        </div>
+
+        {/* Main nav row */}
+        <div style={{
+          maxWidth: '1200px',
+          margin: '0 auto',
+          padding: '0 40px',
+          height: '52px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '32px',
+        }}>
+
+          {/* Logo */}
+          <Link to="/" style={{ textDecoration: 'none', flexShrink: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
               <span style={{
-                fontSize: '32px',
-                animation: 'pulse 2s infinite',
-              }}></span>
-              <span style={{
-                fontSize: '24px',
-                fontWeight: 'bold',
-                color: '#fff',
-                textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+                fontFamily: "'Bebas Neue', sans-serif",
+                fontSize: '22px',
+                letterSpacing: '0.1em',
+                color: '#e8f5e8',
+                lineHeight: 1,
               }}>
-                Future<span style={{ color: '#4a90e2' }}>Wise</span>
+                FUTURE
+              </span>
+              <span style={{
+                fontFamily: "'Bebas Neue', sans-serif",
+                fontSize: '22px',
+                letterSpacing: '0.1em',
+                color: '#c8ff00',
+                lineHeight: 1,
+              }}>
+                WISE
+              </span>
+              <span style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: '9px',
+                color: '#2a3f2a',
+                letterSpacing: '0.1em',
+                marginLeft: '2px',
+                alignSelf: 'flex-end',
+                paddingBottom: '2px',
+              }}>
+                v2.1
               </span>
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop links */}
+          <div
+            className="fw-nav-links"
+            style={{ display: 'flex', gap: '32px', alignItems: 'center', flex: 1, justifyContent: 'center' }}
+          >
+            {NAV_LINKS.map((link) => (
+              <NavLink
+                key={link.path}
+                link={link}
+                isActive={location.pathname === link.path}
+              />
+            ))}
+          </div>
+
+          {/* Auth section */}
+          <div
+            className="fw-nav-user"
+            style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}
+          >
+            {isSignedIn ? (
+              <>
+                <div style={{
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontSize: '10px',
+                  color: '#2a3f2a',
+                  letterSpacing: '0.1em',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}>
+                  <span style={{
+                    display: 'inline-block',
+                    width: '6px', height: '6px',
+                    borderRadius: '50%',
+                    background: '#00d97e',
+                  }}/>
+                  {(user.fullName || user.username || 'TRADER').toUpperCase()}
+                </div>
+                <div style={{
+                  width: '1px', height: '20px',
+                  background: '#111d11',
+                }}/>
+                <UserButton afterSignOutUrl="/" />
+              </>
+            ) : (
+              <>
+                <SignInButton mode="modal">
+                  <button
+                    onMouseEnter={() => setSigninHover(true)}
+                    onMouseLeave={() => setSigninHover(false)}
+                    style={{
+                      fontFamily: "'IBM Plex Mono', monospace",
+                      fontSize: '10px',
+                      letterSpacing: '0.12em',
+                      textTransform: 'uppercase',
+                      background: 'transparent',
+                      color: signinHover ? '#7aaa7a' : '#3d5c3d',
+                      border: 'none',
+                      cursor: 'pointer',
+                      padding: '6px 0',
+                      transition: 'color 0.2s',
+                    }}
+                  >
+                    Sign In
+                  </button>
+                </SignInButton>
+
+                <div style={{ width: '1px', height: '16px', background: '#111d11' }}/>
+
+                <SignUpButton mode="modal">
+                  <button
+                    onMouseEnter={() => setSignupHover(true)}
+                    onMouseLeave={() => setSignupHover(false)}
+                    style={{
+                      fontFamily: "'IBM Plex Mono', monospace",
+                      fontSize: '10px',
+                      letterSpacing: '0.12em',
+                      textTransform: 'uppercase',
+                      background: signupHover ? '#dfff4f' : '#c8ff00',
+                      color: '#050905',
+                      border: 'none',
+                      cursor: 'pointer',
+                      padding: '7px 16px',
+                      clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)',
+                      transition: 'background 0.15s',
+                      fontWeight: 500,
+                    }}
+                  >
+                    Get Access →
+                  </button>
+                </SignUpButton>
+              </>
+            )}
+          </div>
+
+          {/* Hamburger */}
+          <button
+            className="fw-nav-hamburger"
+            onClick={() => setMobileOpen(o => !o)}
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? (
+              <>
+                <span style={{ width: '16px', height: '1px', background: '#3d5c3d', transform: 'rotate(45deg) translate(4px, 4px)', display: 'block' }}/>
+                <span style={{ width: '16px', height: '1px', background: '#3d5c3d', transform: 'rotate(-45deg) translate(4px, -4px)', display: 'block' }}/>
+              </>
+            ) : (
+              <>
+                <span style={{ width: '16px', height: '1px', background: '#3d5c3d', display: 'block' }}/>
+                <span style={{ width: '10px', height: '1px', background: '#3d5c3d', display: 'block' }}/>
+                <span style={{ width: '16px', height: '1px', background: '#3d5c3d', display: 'block' }}/>
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* Mobile drawer */}
+        {mobileOpen && (
           <div style={{
-            display: 'flex',
-            gap: '30px',
-            alignItems: 'center',
+            borderTop: '1px solid #111d11',
+            background: '#050905',
+            padding: '24px 40px 32px',
           }}>
-            {navLinks.map((link, index) => (
+            {NAV_LINKS.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
                 style={{
+                  display: 'block',
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontSize: '12px',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  color: location.pathname === link.path ? '#c8ff00' : '#3d5c3d',
                   textDecoration: 'none',
-                  color: location.pathname === link.path ? '#4a90e2' : '#fff',
-                  fontSize: '16px',
-                  fontWeight: location.pathname === link.path ? 'bold' : 'normal',
-                  padding: '8px 12px',
-                  borderRadius: '20px',
-                  backgroundColor: location.pathname === link.path ? 'rgba(74, 144, 226, 0.1)' : 'transparent',
-                  transition: 'all 0.3s ease',
-                  animation: `fadeIn 0.5s ease ${index * 0.1}s both`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '5px',
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.transform = 'translateY(-2px)';
-                  e.target.style.backgroundColor = 'rgba(255,255,255,0.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.transform = 'translateY(0)';
-                  e.target.style.backgroundColor = location.pathname === link.path ? 'rgba(74, 144, 226, 0.1)' : 'transparent';
+                  padding: '14px 0',
+                  borderBottom: '1px solid #0d180d',
                 }}
               >
-                <span>{link.icon}</span>
-                {link.name}
+                {location.pathname === link.path ? '→ ' : '— '}{link.name}
               </Link>
             ))}
 
-            {/* User Section */}
-            <div style={{
-              marginLeft: '20px',
-              animation: 'fadeIn 0.5s ease 0.6s both',
-            }}>
+            <div style={{ marginTop: '24px', display: 'flex', gap: '12px' }}>
               {isSignedIn ? (
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '15px',
-                }}>
-                  <span style={{ color: '#fff' }}>
-                    👋 {user.fullName || user.username}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <span style={{
+                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontSize: '10px',
+                    color: '#2a3f2a',
+                    letterSpacing: '0.1em',
+                  }}>
+                    {(user.fullName || user.username || 'TRADER').toUpperCase()}
                   </span>
                   <UserButton afterSignOutUrl="/" />
                 </div>
               ) : (
-                <div style={{
-                  display: 'flex',
-                  gap: '10px',
-                }}>
+                <>
                   <SignInButton mode="modal">
                     <button style={{
-                      padding: '8px 16px',
-                      backgroundColor: 'transparent',
-                      color: '#fff',
-                      border: '1px solid #4a90e2',
-                      borderRadius: '20px',
+                      fontFamily: "'IBM Plex Mono', monospace",
+                      fontSize: '10px',
+                      letterSpacing: '0.1em',
+                      textTransform: 'uppercase',
+                      background: 'transparent',
+                      color: '#3d5c3d',
+                      border: '1px solid #141f14',
+                      padding: '10px 20px',
                       cursor: 'pointer',
-                      transition: 'all 0.3s ease',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.backgroundColor = '#4a90e2';
-                      e.target.style.transform = 'scale(1.05)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.backgroundColor = 'transparent';
-                      e.target.style.transform = 'scale(1)';
                     }}>
                       Sign In
                     </button>
                   </SignInButton>
                   <SignUpButton mode="modal">
                     <button style={{
-                      padding: '8px 16px',
-                      backgroundColor: '#4a90e2',
-                      color: '#fff',
+                      fontFamily: "'IBM Plex Mono', monospace",
+                      fontSize: '10px',
+                      letterSpacing: '0.1em',
+                      textTransform: 'uppercase',
+                      background: '#c8ff00',
+                      color: '#050905',
                       border: 'none',
-                      borderRadius: '20px',
+                      padding: '10px 20px',
                       cursor: 'pointer',
-                      transition: 'all 0.3s ease',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.backgroundColor = '#357abd';
-                      e.target.style.transform = 'scale(1.05)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.backgroundColor = '#4a90e2';
-                      e.target.style.transform = 'scale(1)';
+                      fontWeight: 500,
                     }}>
-                      Sign Up
+                      Get Access →
                     </button>
                   </SignUpButton>
-                </div>
+                </>
               )}
             </div>
           </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            style={{
-              display: 'none',
-              background: 'none',
-              border: 'none',
-              color: '#fff',
-              fontSize: '24px',
-              cursor: 'pointer',
-            }}
-          >
-            {mobileMenuOpen ? '✕' : '☰'}
-          </button>
-        </div>
+        )}
       </nav>
 
-      {/* Spacer for fixed navbar */}
-      <div style={{ height: scrolled ? '70px' : '100px', transition: 'height 0.3s ease' }} />
-
-      {/* Animations */}
-      <style>{`
-        @keyframes slideIn {
-          from {
-            opacity: 0;
-            transform: translateX(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes pulse {
-          0%, 100% {
-            transform: scale(1);
-          }
-          50% {
-            transform: scale(1.1);
-          }
-        }
-
-        @keyframes gradientShift {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-      `}</style>
+      {/* Spacer */}
+      <div style={{ height: '74px' }} />
     </>
   );
 }
